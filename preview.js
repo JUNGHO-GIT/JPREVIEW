@@ -45,9 +45,13 @@ function junghoPreview(index) {
 
   // getMaxImageDimensions(이미지의 최대 사이즈) -------------------------------------------------->
   function getMaxImageDimensions() {
-    const width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-    const size = width < 768 ? 330 : width < 1024 ? 330 : 330;
-    return {maxWidth: size, maxHeight: size};
+    const width
+    = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+    const height
+    = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+    const maxWidth = width < 768 ? 330 : width < 1024 ? 330 : 330;
+    const maxHeight = height < 768 ? 400 : height < 1024 ? 400 : 400;
+    return { maxWidth, maxHeight };
   }
 
   // updateImageLoaderSize(이미지 로더의 사이즈) -------------------------------------------------->
@@ -72,7 +76,6 @@ function junghoPreview(index) {
       const dataUrl = canvas.toDataURL();
       setImageBox(imageBox, dataUrl, imageLoader);
       setImageBoxMini(imageMiniBox, dataUrl, file.name, imageBox, getElement("imageMiniLoader" + index));
-      imageFile.value = "";
     };
     image.src = src;
   }
@@ -113,7 +116,8 @@ function junghoPreview(index) {
     const imgProps = {
       borderRadius: "10px",
       boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)",
-      padding: "10px",
+      padding: "5px",
+      margin: "10px",
     };
     Object.assign(imageBox.style, imgProps);
   }
@@ -127,14 +131,12 @@ function junghoPreview(index) {
     const imgProps = {
       borderRadius: "10px",
       boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)",
-      padding: "10px",
+      backgroundColor: "transparent", // Add this line
     };
-    Object.assign (
+    Object.assign(
       imageMiniBox.style, imgProps, {
         width: "100px",
         height: "100px",
-        padding: "5px",
-        margin: "5px",
         cursor: "pointer",
       }
     );
@@ -145,6 +147,7 @@ function junghoPreview(index) {
       Object.assign(imageBox.style, imgProps);
     };
   }
+
 
   // fadeInImage(페이드인 효과 추가) -------------------------------------------------------------->
   function fadeInImage(imageBox) {

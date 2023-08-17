@@ -1,16 +1,14 @@
 /**
 * @author Jungho
 * @since 2023-05-29
-* @version 1.1
+* @version 1.2
 * @desc 이미지를 선택하면 프리뷰로 보여주는 함수, 이미지는 총 2개 까지 가능합니다.
 * @desc 인덱스값이 1개 이상이면 onchange 이벤트 등록, 아니면 oninput 이벤트를 등록합니다.
 **/
 
 function junghoPreview(index) {
 
-  if(index == '' || index == null) {
-    index = '';
-  }
+  if (index == '' || index == null) {index = '';}
 
   // variables (getElement는 document.getElementById를 간략화한 함수) ----------------------------->
   const getElement = (id) => document.getElementById(id);
@@ -116,14 +114,15 @@ function junghoPreview(index) {
   function setImageBox(imageBox, dataUrl, imageLoader) {
     imageBox.src = dataUrl;
     imageLoader.style.display = "none";
-    fadeInImage(imageBox);
     const imgProps = {
       borderRadius: "10px",
       boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)",
       padding: "5px",
       margin: "10px",
+      transition: 'opacity 0.3s ease'
     };
     Object.assign(imageBox.style, imgProps);
+    fadeInImage(imageBox);
   }
 
   // setImageBoxMini(미니 이미지 박스에 이미지 추가) ---------------------------------------------->
@@ -131,11 +130,11 @@ function junghoPreview(index) {
     imageMiniBox.src = dataUrl;
     imageMiniBox.title = title;
     imageMiniLoader.style.display = "none";
-
     const imgProps = {
       borderRadius: "10px",
       boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)",
-      backgroundColor: "transparent", // Add this line
+      backgroundColor: "transparent",
+      transition: 'opacity 0.3s ease'
     };
     Object.assign(
       imageMiniBox.style, imgProps, {
@@ -152,20 +151,16 @@ function junghoPreview(index) {
     };
   }
 
-
   // fadeInImage(페이드인 효과 추가) -------------------------------------------------------------->
   function fadeInImage(imageBox) {
-    setTimeout(() => (imageBox.style.opacity = 1), 100);
+    setTimeout(() => (imageBox.style.opacity = 1), 50);
     let opacity = parseFloat(imageBox.style.opacity) || 0;
-    const fadeIn = setInterval(
-      () => {
-        opacity += 0.1;
-        imageBox.style.opacity = opacity;
-        if (opacity >= 1) clearInterval(fadeIn);
-      }, 30
-    );
-    imageBox.classList.add("pulse");
-    setTimeout(() => imageBox.classList.remove("pulse"), 500);
+    const fadeIn = setInterval(() => {
+      opacity += 0.1;
+      imageBox.style.opacity = opacity;
+      if (opacity >= 1) clearInterval(fadeIn);
+    }, 30);
+    pulseAnimation(imageBox);
   }
 }
 
@@ -185,12 +180,7 @@ function resetImage() {
     imageBox.style.opacity = 0;
     imageLoader.style.display = "block";
     imageMiniBox.src = "";
+    imageMiniBox.title = "";
     imageMiniLoader.style.display = "block";
   };
-}
-
-// reloadPage(페이지 리로드) ---------------------------------------------------------------------->
-function reloadPage() {
-  const reloadButton = document.getElementById("reloadButton");
-  reloadButton.onclick = () => window.location.reload();
 }
